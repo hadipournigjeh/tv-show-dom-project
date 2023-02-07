@@ -1,3 +1,30 @@
+/* ------Reset default styles -------*/
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  outline: 0;
+}
+
+header{
+  background: green;
+  height: 100px;
+}
+
+main{
+  background: rgb(255, 134, 47);
+  flex: 1;
+}
+
+footer{
+  background: red;
+  height: 100px;
+}
+
 #root {
-  color: red;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
