@@ -11,14 +11,40 @@ const searchDiv = document.createElement("div");
 const search_input = document.createElement("input");
 searchDiv.appendChild(search_input);
 search_input.addEventListener("input", (e) => createEpisodes(allEpisodes));
-
 header.appendChild(searchDiv);
+// ----------------------------Creating episodes select tag-----------------------
+const episodesSelectTag = document.createElement("select");
+header.appendChild(episodesSelectTag);
+episodesSelectTag.addEventListener("change", (e) => getEpisode(e.target.value));
+// ---------------------------Helper functions-------------------
 const createTitle = (season, num, name) => {
   return `${name} - S${String(season).padStart(2, 0)}E${String(num).padStart(
     2,
     0
   )}`;
 };
+const getEpisode = (id) => {
+  if (id === "none") {
+    episodesArticle.innerHTML = "";
+    return createEpisodes(allEpisodes);
+  }
+  const episodeId = Number(id);
+  episodesArticle.innerHTML = "";
+  const choosenEpisode = allEpisodes.filter((ep) => ep.id === episodeId);
+  createEpisodes(choosenEpisode);
+};
+const createEpisodesOptions = () => {
+  const myEpisodes = allEpisodes;
+  episodesSelectTag.innerHTML = `<option value='none' selected='selected'>Select Episode</option>`;
+  myEpisodes.forEach((ep, index) => {
+    let opt = document.createElement("option");
+    opt.innerText = createTitle(ep.season, ep.number, ep.name);
+    opt.value = ep.id;
+    opt.classList.add("episodes-option");
+    episodesSelectTag.appendChild(opt);
+  });
+};
+// -------------------------------------
 const createEpisodes = (episodesList) => {
   let allEpisodes = episodesList;
   const filteredEpisodes = episodesList.filter(
@@ -60,8 +86,8 @@ const createEpisodes = (episodesList) => {
 function setup() {
   // ------------Setup page in three parts---------
   root.append(header, main, footer);
-
   makePageForEpisodes(allEpisodes);
+  createEpisodesOptions();
 }
 
 function makePageForEpisodes(episodeList) {
