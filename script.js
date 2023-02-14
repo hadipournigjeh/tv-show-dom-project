@@ -5,7 +5,22 @@ const main = document.createElement("main");
 const footer = document.createElement("footer");
 const episodesArticle = document.createElement("article");
 const episodesTitle = document.createElement("h1");
-const allEpisodes = getAllEpisodes();
+let allEpisodes = [];
+const allMyEpisodes = () => {
+  // return getAllEpisodes();
+  try {
+    fetch("https://api.tvmaze.com/shows/82/episodes")
+      .then((res) => res.json())
+      .then((data) => {
+        allEpisodes = data;
+        makePageForEpisodes(data);
+        createEpisodesOptions();
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // --------------------creating header tags--------------------
 const searchDiv = document.createElement("div");
 const search_input = document.createElement("input");
@@ -83,12 +98,12 @@ const createEpisodes = (episodesList) => {
 // episodesTitle.innerText="Hi"
 // main.appendChild(episodesTitle)
 
-function setup() {
+const setup = () => {
   // ------------Setup page in three parts---------
   root.append(header, main, footer);
-  makePageForEpisodes(allEpisodes);
-  createEpisodesOptions();
-}
+  console.log(allEpisodes);
+  allMyEpisodes();
+};
 
 function makePageForEpisodes(episodeList) {
   episodesTitle.innerText = `${episodeList.length} Episodes found!`;
